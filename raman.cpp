@@ -1,5 +1,5 @@
-#include <math.h>
-
+#include <cmath>
+#include <iostream>
 #include "raman.h"
 
 Raman::Raman(const int num_sampling_points, const int min_freq, const int max_freq) :
@@ -64,4 +64,19 @@ void Raman::write_signal(std::string &output_file) {
 
     output.close();
 
+}
+
+void Raman::read_signal(std::string &input_file) {
+    std::ifstream input(input_file);
+    std::string line;
+
+    double frequency, intensity;
+
+    // Read first line
+    std::getline(input, line);
+
+    while (input >> frequency >> intensity) {
+        m_data_frequencies.push_back(frequency);
+        m_data_intensities.push_back(intensity);
+    }
 }

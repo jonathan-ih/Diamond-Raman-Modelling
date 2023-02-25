@@ -25,11 +25,15 @@ public:
 
     std::vector<double> &get_raman_signal();
     void write_signal(std::string &output_file);
+    void read_signal(std::string &input_file);
 
 private:
     int m_freq_range;
     double m_spectrometer_resolution;
     std::vector<double> m_raman_signal;
+    std::vector<double> m_data_frequencies;
+    std::vector<double> m_data_intensities;
+
 };
 
 

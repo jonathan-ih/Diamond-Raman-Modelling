@@ -22,6 +22,7 @@ int main(int argc, char *argv[]) {
 
     // General parameters
     std::string output_file = "signal.out";
+    std::string input_file = "signal.in";
 
     std::vector<double> pressure_profile(num_elements);
 
@@ -37,4 +38,10 @@ int main(int argc, char *argv[]) {
 
     raman.compute_raman_signal(diamond, laser);
     raman.write_signal(output_file);
+
+    raman.read_signal(input_file);
+
+    // Fit the data
+    // Fit the intensities to the frequencies with the pressures in the DAC as parameters
+
 }

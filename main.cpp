@@ -22,6 +22,8 @@ int compute_fitting_residuals(const gsl_vector *pressures, void *data,
     Raman raman = *((struct FittingData *)data)->raman;
     Diamond diamond = *((struct FittingData *)data)->diamond;
     Laser laser = *((struct FittingData *)data)->laser;
+    double negative_penalty = 0;
+    double decrease_penalty = 0;
 
     std::vector<double> pressure_profile(pressures->size);
     for (int i = 0; i != pressures->size; i++) {
@@ -34,8 +36,26 @@ int compute_fitting_residuals(const gsl_vector *pressures, void *data,
     std::vector<double> actual = raman.get_data_intensities();
     std::vector<double> predicted = raman.get_raman_signal();
     for (int i = 0; i != raman.m_sample_points; i++) {
-        gsl_vector_set(output_differences, i, predicted[i] - actual[i]);
+        gsl_vector_set(output_differences, i, predicted[i] - actual[i]);        
     }
+
+    // Compute additional penalties
+    for (int i = 0; i != diamond.m_num_elements; i++) {
+        if (gsl_vector_get(pressures, i) < 0) {
+            negative_penalty += pow(0.0 - gsl_vector_get(pressures, i), 6);
+        }
+        if (i > 0) {
+            double difference = gsl_vector_get(pressures, i) - gsl_vector_get(pressures, i - 1);
+            decrease_penalty += difference < 0.0 ? pow(difference, 2) : 0.0;
+        }
+    }
+
+    // Additional penalty for having pressures decrease towards the tip
+    gsl_vector_set(output_differences, raman.m_sample_points, negative_penalty);
+
+    // Add additional penalty for frequencies below zero
+    gsl_vector_set(output_differences, raman.m_sample_points + 1, decrease_penalty);
+
 
     return GSL_SUCCESS;    
 }
@@ -50,7 +70,7 @@ void callback(const size_t iter, void *pressures,
 int main(int argc, char *argv[]) {
 
     // Diamond parameters
-    const int num_elements = 10;
+    const int num_elements = 100;
     const double depth = 10.0;
     const double tip_pressure = 50;
 
@@ -105,13 +125,20 @@ int main(int argc, char *argv[]) {
     FittingData params {&raman, &diamond, &laser};
     const int num_frequencies = raman.m_sample_points;
     const int num_pressures = diamond.m_num_elements;
-    double *starting_pressures = new double[num_pressures]();       // Initialise to 0
-    double *wts = new double[num_frequencies];        // weights
+    double *starting_pressures = new double[num_pressures]();     
+    // Initialise to linear profile  
+    for (int i = 0; i != num_pressures; i++) {
+        starting_pressures[i] = i * (tip_pressure / num_elements);
+    }
+    double *wts = new double[num_frequencies + 2];        // weights
     for (int i = 0; i != num_frequencies; i++) {
         wts[i] = 1.0;
     }
+    // Make weight of final penalty terms equal to all others combined
+    wts[num_frequencies] = num_frequencies;
+    wts[num_frequencies + 1] = num_frequencies;
     gsl_vector_view pressures = gsl_vector_view_array(starting_pressures, num_pressures);
-    gsl_vector_view weights = gsl_vector_view_array(wts, num_frequencies);
+    gsl_vector_view weights = gsl_vector_view_array(wts, num_frequencies + 2);
 
     // Set tolerances
     const double xtol = 1e-8;
@@ -122,7 +149,7 @@ int main(int argc, char *argv[]) {
     fitting_equations.f = compute_fitting_residuals;
     fitting_equations.df = NULL;    // Compute Jacobian from finite difference
     fitting_equations.fvv = NULL;   // Do not use geodesic acceleration
-    fitting_equations.n = num_frequencies;
+    fitting_equations.n = num_frequencies + 2;      // + 2 accounts for penalty terms
     fitting_equations.p = num_pressures;
     fitting_equations.params = &params;
 
@@ -134,7 +161,7 @@ int main(int argc, char *argv[]) {
     int status, info;
 
     // Allocate the workspace with default parameters
-    workspace = gsl_multifit_nlinear_alloc(fittingtype, &fitting_equations_params, num_frequencies, num_pressures);
+    workspace = gsl_multifit_nlinear_alloc(fittingtype, &fitting_equations_params, num_frequencies + 2, num_pressures);
 
     // initialize solver with starting point and weights
     gsl_multifit_nlinear_winit(&pressures.vector, &weights.vector, &fitting_equations, workspace);

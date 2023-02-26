@@ -24,6 +24,7 @@ public:
     void reset_raman_signal();
 
     std::vector<double> &get_raman_signal();
+    std::vector<double> &get_data_intensities();
     void write_signal(std::string &output_file);
     void read_signal(std::string &input_file);
 

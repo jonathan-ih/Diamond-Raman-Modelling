@@ -16,6 +16,10 @@ std::vector<double> &Raman::get_raman_signal() {
     return m_raman_signal;
 }
 
+std::vector<double> &Raman::get_data_intensities() {
+    return m_data_intensities;
+}
+
 void Raman::reset_raman_signal() {
     m_raman_signal = std::vector<double>(m_sample_points, 0.0);
 }
@@ -61,9 +65,7 @@ void Raman::write_signal(std::string &output_file) {
         output << frequency << "    " << m_raman_signal[i] << "\n";
     }
     output << std::endl;
-
     output.close();
-
 }
 
 void Raman::read_signal(std::string &input_file) {

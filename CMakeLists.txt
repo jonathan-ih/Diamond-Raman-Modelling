@@ -6,6 +6,7 @@ SET(CMAKE_CXX_FLAGS_DEBUG "-O2")
 find_library(GSL REQUIRED)
 
 add_executable(Diamond_Raman_Modelling
-        main.cpp diamond.cpp diamond.h laser.cpp laser.h raman.cpp raman.h)
+        main.cpp diamond.cpp diamond.h laser.cpp laser.h raman.cpp raman.h
+        fitting.cpp fitting.h)
 
 target_link_libraries(Diamond_Raman_Modelling gsl)

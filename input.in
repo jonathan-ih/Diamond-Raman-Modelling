@@ -1,0 +1,27 @@
+# Input file for Raman simulation
+
+&DIAMOND
+NELEM = 50
+DEPTH = 100.0 
+INITIAL_PROFILE = LINEAR
+TIP_PRESSURE = 75   # Estimated tip pressure
+/
+
+&RAMAN
+NFREQ = 1000
+MAX_FREQ = 2000
+MIN_FREQ = 1000
+/
+
+&LASER
+INTENSITY = 100     # Test comment
+/
+
+&GENERAL
+MAX_ITER = 1000
+SIG_IN = signal.out
+SIG_OUT = signal.out
+PRESS_OUT = pressure.out
+FIT_SIG_OUT = fitted_signal.out
+FIT_PRESS_OUT = fitted_pressure.out
+/

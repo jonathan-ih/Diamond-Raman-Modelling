@@ -6,28 +6,33 @@
 #include "raman.h"
 #include "laser.h"
 #include "fitting.h"
+#include "settings.h"
 
 int main(int argc, char *argv[]) {
 
+    std::string input_file(argv[1]);
+    Settings settings(input_file);
+
     // Diamond parameters
-    const int num_elements = 100;
-    const double depth = 10.0;
-    const double tip_pressure = 50;
+    const int num_elements = settings.diamond.num_elements;
+    const double depth = settings.diamond.depth;
+    const double tip_pressure = settings.diamond.tip_pressure;
 
     // Raman parameters
-    const int num_sample_points = 1000;
-    const int max_freq = 1500;
-    const int min_freq = 1000;
+    const int num_sample_points = settings.raman.num_sample_points;
+    const double max_freq = settings.raman.max_freq;
+    const double min_freq = settings.raman.min_freq;
 
     // Laser parameters
-    const double intensity = 100;
+    const double intensity = settings.laser.intensity;
 
     // General parameters
-    std::string signal_output_file = "signal.out";
-    std::string signal_input_file = "signal.out";
-    std::string pressure_output_file = "pressure.out";
-    std::string fitted_signal_file = "fitted_signal.out";
-    std::string fitted_pressure_file = "fitted_pressure.out";
+    const int max_iter = settings.general.max_iter;
+    std::string signal_output_file = settings.general.signal_output_file;
+    std::string signal_input_file = settings.general.signal_input_file;
+    std::string pressure_output_file = settings.general.pressure_output_file;
+    std::string fitted_signal_file = settings.general.fitted_signal_file;
+    std::string fitted_pressure_file = settings.general.fitted_pressure_file;
 
     std::vector<double> pressure_profile(num_elements);
 
@@ -62,7 +67,7 @@ int main(int argc, char *argv[]) {
 
     fitting.set_initial_pressures(starting_pressures);
     fitting.initialize();
-    fitting.fit(100);
+    fitting.fit(max_iter);
     fitting.print_summary();
     new_pressure_profile = fitting.get_new_pressure_profile();
 

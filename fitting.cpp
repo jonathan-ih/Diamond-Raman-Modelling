@@ -160,5 +160,5 @@ void Fitting::callback(const size_t iter, void *pressures,
               const gsl_multifit_nlinear_workspace *workspace) {
     // gsl_vector *residual = gsl_multifit_nlinear_residual(workspace);
     // gsl_vector *current_pressures = gsl_multifit_nlinear_position(workspace);
-    std::cout << "Iteration " << iter << "\n";
+    //std::cout << "Iteration " << iter << "\n";
 }

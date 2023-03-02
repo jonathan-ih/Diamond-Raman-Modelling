@@ -51,6 +51,7 @@ void Fitting::set_initial_pressures(std::vector<double> init_pressures) {
 }
 
 void Fitting::initialize() {
+    set_initial_pressures(m_params.diamond->m_pressure_profile);
     // Allocate the workspace with default parameters
     m_workspace = gsl_multifit_nlinear_alloc(m_fittingtype,
                                              &m_fitting_equations_params,

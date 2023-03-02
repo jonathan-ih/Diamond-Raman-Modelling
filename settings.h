@@ -28,7 +28,7 @@ struct DiamondSettings {
     int num_elements;
     double depth;
     double tip_pressure;
-    std::string initial_profile;
+    std::string pressure_profile;
 };
 
 struct RamanSettings {
@@ -42,12 +42,12 @@ struct LaserSettings {
 };
 
 struct GeneralSettings {
+    std::string mode;
     int max_iter;
     std::string signal_output_file;
     std::string signal_input_file;
+    std::string pressure_input_file;
     std::string pressure_output_file;
-    std::string fitted_signal_file;
-    std::string fitted_pressure_file;
 };
 
 class Settings {
@@ -64,13 +64,11 @@ private:
     void process_input_file(std::vector<std::string> &file_contents);
     void process_section(std::string section, std::vector<std::string> section_contents);
     void validate_and_assign(std::string key, SettingInfo info);
-    void assign_values_to_structs(std::string section, std::map<std::string, void*> setting_values);
-
 
     std::map<std::string, SettingInfo> diamond_settings_info = {
         {"NELEM", {POSITIVE_INTEGER, {}, "100", false, &diamond.num_elements}},
         {"DEPTH", {POSITIVE_FLOAT, {}, "0", true, &diamond.depth}},
-        {"INITIAL_PROFILE", {TEXT, {"LINEAR", "QUADRATIC"},"LINEAR", false, &diamond.initial_profile}},
+        {"PRESSURE_PROFILE", {TEXT, {"LINEAR", "QUADRATIC"},"LINEAR", false, &diamond.pressure_profile}},
         {"TIP_PRESSURE", {POSITIVE_FLOAT, {}, "0", false, &diamond.tip_pressure}},
     };
     std::map<std::string, SettingInfo> raman_settings_info = {
@@ -82,12 +80,12 @@ private:
         {"INTENSITY", {POSITIVE_FLOAT, {}, "100", false, &laser.intensity}},
     };
     std::map<std::string, SettingInfo> general_settings_info = {
+        {"MODE", {TEXT, {"SIMULATE", "FIT"}, "", true, &general.mode}},
         {"MAX_ITER", {POSITIVE_INTEGER, {}, "100", false, &general.max_iter}},
         {"SIG_IN", {TEXT, {}, "signal.in", false, &general.signal_input_file}},
         {"SIG_OUT", {TEXT, {}, "signal.out", false, &general.signal_output_file}},
+        {"PRESS_IN", {TEXT, {}, "pressure.in", false, &general.pressure_input_file}},
         {"PRESS_OUT", {TEXT, {}, "pressure.out", false, &general.pressure_output_file}},
-        {"FIT_SIG_OUT", {TEXT, {}, "fitted_signal.out", false, &general.fitted_signal_file}},
-        {"FIT_PRESS_OUT", {TEXT, {}, "fitted_pressure.out", false, &general.fitted_pressure_file}},
     };
 };
 

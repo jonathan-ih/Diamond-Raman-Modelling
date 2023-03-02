@@ -7,14 +7,16 @@
 
 #include "diamond.h"
 #include "laser.h"
+#include "settings.h"
 
 class Raman {
 public:
-    int m_min_freq;
-    int m_max_freq;
+    double m_min_freq;
+    double m_max_freq;
     int m_sample_points;
 
-    Raman(int num_sampling_points, int min_freq, int max_freq);
+    Raman(int num_sampling_points, double min_freq, double max_freq);
+    Raman(RamanSettings raman_settings);
 
     static double get_frequency(double pressure);
     static double get_linewidth(double pressure);

@@ -158,24 +158,3 @@ void Settings::validate_and_assign(std::string value_string, SettingInfo info) {
         *((std::string *)info.assignment_pointer) = value;
     }
 }
-
-void Settings::assign_values_to_structs(std::string section, std::map<std::string, void*> setting_values) {
-    if (section == "DIAMOND") {
-        diamond.num_elements = *((int *)setting_values["NELEM"]);
-        diamond.depth = *((double *)setting_values["DEPTH"]);
-        diamond.tip_pressure = *((double *)setting_values["TIP_PRESSURE"]);
-        diamond.initial_profile = *((std::string *)setting_values["INITIAL_PROFILE"]);
-    } else if (section == "RAMAN") {
-        raman.num_sample_points = *((int *)setting_values["NFREQ"]);
-        raman.max_freq = *((double *)setting_values["MAX_FREQ"]);
-        raman.min_freq = *((double *)setting_values["MIN_FREQ"]);
-    } else if (section == "LASER") {
-        laser.intensity = *((double *)setting_values["INTENSITY"]);
-    } else {
-        general.signal_input_file = *((std::string *)setting_values["SIG_IN"]);
-        general.signal_output_file = *((std::string *)setting_values["SIG_OUT"]);
-        general.pressure_output_file = *((std::string *)setting_values["PRESS_OUT"]);
-        general.fitted_signal_file = *((std::string *)setting_values["FIT_SIG_OUT"]);
-        general.fitted_pressure_file = *((std::string *)setting_values["FIT_PRESS_OUT"]);
-    }
-}

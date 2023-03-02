@@ -2,15 +2,22 @@
 #include <iostream>
 #include "raman.h"
 
-Raman::Raman(const int num_sampling_points, const int min_freq, const int max_freq) :
+Raman::Raman(const int num_sampling_points, const double min_freq, const double max_freq) :
     m_sample_points(num_sampling_points),
     m_min_freq(min_freq),
     m_max_freq(max_freq),
-    m_freq_range(max_freq - min_freq),
-    m_spectrometer_resolution(static_cast<double>(m_freq_range) / static_cast<double>(m_sample_points)),
-    m_raman_signal(m_sample_points, 0.0) {
+    m_freq_range(m_max_freq - m_min_freq),
+    m_spectrometer_resolution(m_freq_range / static_cast<double>(m_sample_points)),
+    m_raman_signal(m_sample_points, 0.0) {}
 
-}
+Raman::Raman(const RamanSettings raman_settings) : 
+    m_sample_points(raman_settings.num_sample_points),
+    m_min_freq(raman_settings.min_freq),
+    m_max_freq(raman_settings.max_freq),
+    m_freq_range(m_max_freq - m_min_freq),
+    m_spectrometer_resolution(m_freq_range / static_cast<double>(m_sample_points)),
+    m_raman_signal(m_sample_points, 0.0) {}
+
 
 std::vector<double> &Raman::get_raman_signal() {
     return m_raman_signal;

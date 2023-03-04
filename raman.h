@@ -10,27 +10,31 @@
 #include "settings.h"
 
 class Raman {
+    static double compute_frequency(double pressure);
+    static double compute_linewidth(double pressure);
+
 public:
-    double m_min_freq;
-    double m_max_freq;
-    int m_sample_points;
-
     Raman(int num_sampling_points, double min_freq, double max_freq);
-    Raman(RamanSettings raman_settings);
-
-    static double get_frequency(double pressure);
-    static double get_linewidth(double pressure);
+    Raman(const RamanSettings &raman_settings);
 
     void add_hydrostatic_signal(double peak_intensity, double peak_frequency, double linewidth);
-    void compute_raman_signal(Diamond &diamond, Laser &laser);
+    void compute_raman_signal(const Diamond &diamond, const Laser &laser);
     void reset_raman_signal();
 
-    std::vector<double> &get_raman_signal();
-    std::vector<double> &get_data_intensities();
-    void write_signal(std::string &output_file);
-    void read_signal(std::string &input_file);
+    double get_min_freq() const { return m_min_freq; }
+    double get_max_freq() const { return m_max_freq; }
+    int get_num_sample_points() const {return m_num_sample_points; }
+    std::vector<double> &get_raman_signal() { return m_raman_signal; }
+    std::vector<double> &get_data_intensities() {return m_data_intensities; }
+    const std::vector<double> &get_raman_signal() const { return m_raman_signal; }
+    const std::vector<double> &get_data_intensities() const { return m_data_intensities; }
+    void write_signal(const std::string &output_file) const;
+    void read_signal(const std::string &input_file);
 
 private:
+    double m_min_freq;
+    double m_max_freq;
+    int m_num_sample_points;
     int m_freq_range;
     double m_spectrometer_resolution;
     std::vector<double> m_raman_signal;

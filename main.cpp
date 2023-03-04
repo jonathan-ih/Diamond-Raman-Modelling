@@ -33,6 +33,10 @@ int main(int argc, char *argv[]) {
         raman.compute_raman_signal(diamond, laser);
         raman.write_signal(signal_output_file);
     } else if (settings.general.mode == "FIT") {
+        if (settings.diamond.pressure_profile == "FILE") {
+            diamond.set_pressure_profile(pressure_input_file);
+        }
+
         std::vector<double> new_pressure_profile;
 
         raman.read_signal(signal_input_file);
@@ -42,6 +46,8 @@ int main(int argc, char *argv[]) {
         fitting.initialize();
         fitting.fit(max_iter);
         fitting.print_summary();
+
+        // Shouldn't have to do this
         new_pressure_profile = fitting.get_new_pressure_profile();
 
         diamond.set_pressure_profile(new_pressure_profile);

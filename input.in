@@ -2,7 +2,7 @@
 
 &DIAMOND
 NELEM = 50
-DEPTH = 100.0 
+DEPTH = 1.0 
 PRESSURE_PROFILE = LINEAR
 TIP_PRESSURE = 100   # Estimated tip pressure
 /
@@ -19,7 +19,7 @@ INTENSITY = 100     # Test comment
 
 &GENERAL
 MODE = FIT
-MAX_ITER = 1000
+MAX_ITER = 100
 SIG_IN = signal.in
 SIG_OUT = signal.out
 PRESS_IN = pressure.in

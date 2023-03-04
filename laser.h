@@ -5,10 +5,15 @@
 
 class Laser {
 public:
-    double m_intensity;
 
-    Laser(double m_intensity);
-    Laser(const LaserSettings laser_settings);
+    Laser(double intensity);
+    Laser(const LaserSettings &laser_settings);
+
+    double get_intensity() { return m_intensity ;}
+    double get_intensity() const { return m_intensity ;}
+
+private:
+    double m_intensity;
 
 };
 

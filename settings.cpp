@@ -6,9 +6,9 @@
 
 #include "settings.h"
 
-Settings::Settings(std::string &input_file) {
+Settings::Settings(const std::string &input_file) {
     std::vector<std::string> file_contents = read_input_file(input_file);
-    clean_input_file(file_contents);
+    clean_file_contents(file_contents);
     process_input_file(file_contents);
 }
 
@@ -22,7 +22,7 @@ std::vector<std::string> Settings::read_input_file(const std::string &input_file
     return file_contents;
 }
 
-void Settings::process_input_file(std::vector<std::string> &file_contents) {
+void Settings::process_input_file(const std::vector<std::string> &file_contents) {
     std::string current_section;
     std::vector<std::string> section_contents;
 
@@ -46,7 +46,7 @@ void Settings::process_input_file(std::vector<std::string> &file_contents) {
     }
 }
 
-void Settings::clean_input_file(std::vector<std::string> &file_contents) {
+void Settings::clean_file_contents(std::vector<std::string> &file_contents) {
     auto it = file_contents.begin();
     while(it != file_contents.end()) {
         // Strip any trailing comments 
@@ -64,9 +64,9 @@ void Settings::clean_input_file(std::vector<std::string> &file_contents) {
     }
 }
 
-void Settings::process_section(std::string section, std::vector<std::string> section_contents) {
+void Settings::process_section(const std::string &section, const std::vector<std::string> &section_contents) {
     std::map<std::string, std::string> user_settings;
-    for (auto line : section_contents) {
+    for (auto &line : section_contents) {
         std::string key = line.substr(0, line.find("="));
         std::string value = line.substr(line.find("=")+1, line.size());
         user_settings[key] = value;
@@ -85,7 +85,7 @@ void Settings::process_section(std::string section, std::vector<std::string> sec
         throw std::runtime_error("Section " + section + " not recognised"); 
     }
 
-    for (auto setting : settings_map) {
+    for (auto &setting : settings_map) {
         std::string key = setting.first;
         SettingInfo info = setting.second;
         std::string value_string;
@@ -117,7 +117,7 @@ void Settings::process_section(std::string section, std::vector<std::string> sec
     }
 }
 
-void Settings::validate_and_assign(std::string value_string, SettingInfo info) {
+void Settings::validate_and_assign(const std::string &value_string, const SettingInfo &info) {
     if (info.setting_type == INTEGER) {
         int value = std::stoi(value_string);
         *((int *)info.assignment_pointer) = value;

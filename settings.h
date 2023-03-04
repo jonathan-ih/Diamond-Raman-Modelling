@@ -57,18 +57,19 @@ public:
     LaserSettings laser;
     GeneralSettings general;
 
-    Settings(std::string &input_file);
+    Settings(const std::string &input_file);
+
 private:
     std::vector<std::string> read_input_file(const std::string &input_file);
-    void clean_input_file(std::vector<std::string> &file_contents);
-    void process_input_file(std::vector<std::string> &file_contents);
-    void process_section(std::string section, std::vector<std::string> section_contents);
-    void validate_and_assign(std::string key, SettingInfo info);
+    void clean_file_contents(std::vector<std::string> &file_contents);
+    void process_input_file(const std::vector<std::string> &file_contents);
+    void process_section(const std::string &section, const std::vector<std::string> &section_contents);
+    void validate_and_assign(const std::string &key, const SettingInfo &info);
 
     std::map<std::string, SettingInfo> diamond_settings_info = {
         {"NELEM", {POSITIVE_INTEGER, {}, "100", false, &diamond.num_elements}},
         {"DEPTH", {POSITIVE_FLOAT, {}, "0", true, &diamond.depth}},
-        {"PRESSURE_PROFILE", {TEXT, {"LINEAR", "QUADRATIC"},"LINEAR", false, &diamond.pressure_profile}},
+        {"PRESSURE_PROFILE", {TEXT, {"LINEAR", "QUADRATIC", "FILE"},"LINEAR", false, &diamond.pressure_profile}},
         {"TIP_PRESSURE", {POSITIVE_FLOAT, {}, "0", false, &diamond.tip_pressure}},
     };
     std::map<std::string, SettingInfo> raman_settings_info = {

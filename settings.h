@@ -61,12 +61,12 @@ public:
     Settings(const std::string &input_file);
 
 private:
-    std::vector<std::string> read_input_file(const std::string &input_file);
-    void clean_file_contents(std::vector<std::string> &file_contents);
-    void process_input_file(const std::vector<std::string> &file_contents);
-    void process_section(const std::string &section, const std::vector<std::string> &section_contents);
-    void validate_and_assign(const std::string &key, const SettingInfo &info);
-    void check_allowed_values(const std::string &value_string, const std::set<std::string> &allowed_values);
+    std::vector<std::string> read_input_file(const std::string &input_file) const;
+    void clean_file_contents(std::vector<std::string> &file_contents) const;
+    void process_input_file(const std::vector<std::string> &file_contents) const;
+    void process_section(const std::string &section, const std::vector<std::string> &section_contents) const;
+    void validate_and_assign(const std::string &key, const SettingInfo &info) const;
+    void check_allowed_values(const std::string &value_string, const std::set<std::string> &allowed_values) const;
 
     std::map<std::string, SettingInfo> diamond_settings_info = {
         {"NELEM", {POSITIVE_INTEGER, {}, "100", false, &diamond.num_elements}},

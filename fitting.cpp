@@ -110,14 +110,6 @@ void Fitting::fit(const int max_iter) {
 
 }
 
-std::vector<double> Fitting::get_new_pressure_profile() {
-    std::vector<double> new_pressure_profile(m_num_pressures);
-    for (int i = 0; i != m_num_pressures; i++) {
-        new_pressure_profile[i] = gsl_vector_get(m_workspace->x, i);
-    }
-    return new_pressure_profile;
-}
-
 int Fitting::compute_cost_function(const gsl_vector *pressures, void *data,
                                    gsl_vector *output_differences) {
     // Cast pointer to void to pointer to struct and extract the member variables

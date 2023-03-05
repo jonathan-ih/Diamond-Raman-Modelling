@@ -28,7 +28,6 @@ public:
     void initialize();
     void fit(int max_iter);
     void print_summary() const;
-    std::vector<double> get_new_pressure_profile();
 
 private:
     int m_num_frequencies;

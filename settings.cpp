@@ -12,7 +12,7 @@ Settings::Settings(const std::string &input_file) {
     process_input_file(file_contents);
 }
 
-std::vector<std::string> Settings::read_input_file(const std::string &input_file) {
+std::vector<std::string> Settings::read_input_file(const std::string &input_file) const {
     std::ifstream input(input_file);
     std::string line;
     std::vector<std::string> file_contents;
@@ -22,7 +22,7 @@ std::vector<std::string> Settings::read_input_file(const std::string &input_file
     return file_contents;
 }
 
-void Settings::process_input_file(const std::vector<std::string> &file_contents) {
+void Settings::process_input_file(const std::vector<std::string> &file_contents) const {
     std::string current_section;
     std::vector<std::string> section_contents;
 
@@ -46,7 +46,7 @@ void Settings::process_input_file(const std::vector<std::string> &file_contents)
     }
 }
 
-void Settings::clean_file_contents(std::vector<std::string> &file_contents) {
+void Settings::clean_file_contents(std::vector<std::string> &file_contents) const {
     auto it = file_contents.begin();
     while(it != file_contents.end()) {
         // Strip any trailing comments 
@@ -64,7 +64,7 @@ void Settings::clean_file_contents(std::vector<std::string> &file_contents) {
     }
 }
 
-void Settings::process_section(const std::string &section, const std::vector<std::string> &section_contents) {
+void Settings::process_section(const std::string &section, const std::vector<std::string> &section_contents) const {
     std::map<std::string, std::string> user_settings;
     for (auto &line : section_contents) {
         std::string key = line.substr(0, line.find("="));
@@ -117,7 +117,7 @@ void Settings::process_section(const std::string &section, const std::vector<std
     }
 }
 
-void Settings::validate_and_assign(const std::string &value_string, const SettingInfo &info) {
+void Settings::validate_and_assign(const std::string &value_string, const SettingInfo &info) const {
     check_allowed_values(value_string, info.allowed_values);
     if (info.setting_type == INTEGER) {
         int value = std::stoi(value_string);
@@ -155,7 +155,7 @@ void Settings::validate_and_assign(const std::string &value_string, const Settin
     }
 }
 
-void Settings::check_allowed_values(const std::string &value_string, const std::set<std::string> &allowed_values) {
+void Settings::check_allowed_values(const std::string &value_string, const std::set<std::string> &allowed_values) const {
     if (!allowed_values.empty()) {
         if (allowed_values.find(value_string) == allowed_values.end()) {
             throw std::runtime_error("Invalid value " + value_string + ".\n");

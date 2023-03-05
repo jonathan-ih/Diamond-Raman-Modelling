@@ -3,6 +3,7 @@
 #include <cctype>
 #include <algorithm>
 #include <stdexcept>
+#include <string>
 
 #include "settings.h"
 
@@ -163,4 +164,61 @@ void Settings::check_allowed_values(const std::string &value_string, const std::
             throw std::runtime_error("Invalid value " + value_string + ".\n");
         }
     }
+}
+
+std::ostream& Settings::print_general_settings(std::ostream& out_stream, const GeneralSettings &general, int indent) {
+    out_stream << "GENERAL Settings" << std::endl;
+    out_stream << std::string(indent, ' ') << "Fitting mode: " << general.mode << "\n"
+               << std::string(indent, ' ') << "Signal input file: " << (general.signal_input_file.empty() ?
+                                                                        "Not specified" : general.signal_input_file) << "\n"
+               << std::string(indent, ' ') << "Pressure input file: " << (general.pressure_input_file.empty() ? 
+                                                                        "Not specified" : general.pressure_input_file) << "\n"
+               << std::string(indent, ' ') << "Signal output file: " << (general.signal_output_file.empty() ? 
+                                                                        "Not specified" : general.signal_output_file) << "\n"
+               << std::string(indent, ' ') << "Pressure output file: " << (general.pressure_output_file.empty() ? 
+                                                                        "Not specified" : general.pressure_output_file) << "\n"
+               << std::string(indent, ' ') << "Verbosity: " << general.verbosity << std::endl;
+    return out_stream;
+}
+
+
+std::ostream& Settings::print_fitting_settings(std::ostream& out_stream, const FittingSettings &fitting, int indent) {
+    out_stream << "FITTING Settings" << std::endl;
+    out_stream << std::string(indent, ' ') << "Max iterations: " << fitting.max_iter << "\n";
+    if (fitting.print_freq == 0) {
+        out_stream <<  std::string(indent, ' ') << "Do not print fitting progress\n";
+    } else {
+        out_stream << std::string(indent, ' ') << "Print fitting progress every " << fitting.print_freq << " iterations.\n";
+    }
+    out_stream << std::string(indent, ' ') << "Signal log file: " << (fitting.signal_log_file.empty() ? 
+                                                                      "Not specified" : fitting.signal_log_file) << "\n"
+               << std::string(indent, ' ') << "Pressure log file: " << (fitting.pressure_log_file.empty() ? 
+                                                                        "Not specified" : fitting.pressure_log_file) << "\n"
+               << std::string(indent, ' ') << "Small step size tolerance - xtol: " << fitting.xtol << "\n"
+               << std::string(indent, ' ') << "Small gradient tolerance - gtol: " << fitting.gtol << std::endl;
+    return out_stream;
+}
+
+std::ostream& Settings::print_diamond_settings(std::ostream& out_stream, const DiamondSettings &diamond, int indent) {
+    out_stream << "DIAMOND Settings" << std::endl;
+    out_stream << std::string(indent, ' ') << "Number of volume elements: " << diamond.num_elements << "\n"
+               << std::string(indent, ' ') << "Depth of the anvil: " << diamond.depth << "\n"
+               << std::string(indent, ' ') << "Tip pressure: " << diamond.tip_pressure << "\n"
+               << std::string(indent, ' ') << "Pressure profile: " << (diamond.pressure_profile == "FILE" ?
+                                                                       "Read from PRESS_IN" : diamond.pressure_profile) << std::endl;
+    return out_stream;
+}
+
+std::ostream& Settings::print_raman_settings(std::ostream& out_stream, const RamanSettings &raman, int indent) {
+    out_stream << "RAMAN Settings" << std::endl;
+    out_stream << std::string(indent, ' ') << "Number of sampling points in the spectrum: " << raman.num_sample_points << "\n"
+               << std::string(indent, ' ') << "Minimum cutoff frequency: " << raman.min_freq << "\n"
+               << std::string(indent, ' ') << "Maximum cutoff frequency: " << raman.max_freq << std::endl;
+    return out_stream;
+}
+
+std::ostream& Settings::print_laser_settings(std::ostream& out_stream, const LaserSettings &laser, int indent) {
+    out_stream << "LASER Settings" << std::endl;
+    out_stream << std::string(indent, ' ') << "Intensity: " << laser.intensity << std::endl;
+    return out_stream;
 }

@@ -52,7 +52,6 @@ struct FittingSettings {
 
 struct GeneralSettings {
     std::string mode;
-    int max_iter;
     int verbosity;
     std::string signal_output_file;
     std::string signal_input_file;
@@ -69,6 +68,12 @@ public:
     FittingSettings fitting;
 
     Settings(const std::string &input_file);
+
+    static std::ostream& print_general_settings(std::ostream& out_stream, const GeneralSettings &general, int indent=4);
+    static std::ostream& print_fitting_settings(std::ostream& out_stream, const FittingSettings &fitting, int indent=4);
+    static std::ostream& print_diamond_settings(std::ostream& out_stream, const DiamondSettings &diamond, int indent=4);
+    static std::ostream& print_raman_settings(std::ostream& out_stream, const RamanSettings &raman, int indent=4);
+    static std::ostream& print_laser_settings(std::ostream& out_stream, const LaserSettings &laser, int indent=4);
 
 private:
     std::vector<std::string> read_input_file(const std::string &input_file) const;

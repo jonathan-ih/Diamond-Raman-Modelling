@@ -15,7 +15,7 @@ class Raman {
 
 public:
     Raman(int num_sampling_points, double min_freq, double max_freq);
-    Raman(const RamanSettings &raman_settings);
+    Raman(const Settings &settings);
 
     void add_hydrostatic_signal(double peak_intensity, double peak_frequency, double linewidth);
     void compute_raman_signal(const Diamond &diamond, const Laser &laser);

@@ -118,6 +118,7 @@ void Settings::process_section(const std::string &section, const std::vector<std
 }
 
 void Settings::validate_and_assign(const std::string &value_string, const SettingInfo &info) {
+    check_allowed_values(value_string, info.allowed_values);
     if (info.setting_type == INTEGER) {
         int value = std::stoi(value_string);
         *((int *)info.assignment_pointer) = value;
@@ -150,11 +151,14 @@ void Settings::validate_and_assign(const std::string &value_string, const Settin
         *((double *)info.assignment_pointer) = value;
     } else if (info.setting_type == TEXT) {
         std::string value = value_string;
-        if (!info.allowed_values.empty()) {
-            if (info.allowed_values.find(value_string) == info.allowed_values.end()) {
-                throw std::runtime_error("Invalid value " + value_string + ".\n");
-            }
-        }
         *((std::string *)info.assignment_pointer) = value;
+    }
+}
+
+void Settings::check_allowed_values(const std::string &value_string, const std::set<std::string> &allowed_values) {
+    if (!allowed_values.empty()) {
+        if (allowed_values.find(value_string) == allowed_values.end()) {
+            throw std::runtime_error("Invalid value " + value_string + ".\n");
+        }
     }
 }

@@ -7,14 +7,16 @@ Diamond::Diamond(const double depth, const int num_elements) : m_depth(depth), m
                                                                m_element_size(m_depth / m_num_elements),
                                                                m_pressure_profile(m_num_elements) {}
 
-Diamond::Diamond(const DiamondSettings &diamond_settings) : m_depth(diamond_settings.depth),
-                                                            m_num_elements(diamond_settings.num_elements),
+Diamond::Diamond(const Settings &settings) : m_depth(settings.diamond.depth),
+                                                            m_num_elements(settings.diamond.num_elements),
                                                             m_element_size(m_depth / m_num_elements),
                                                             m_pressure_profile(m_num_elements) {
-    if (diamond_settings.pressure_profile == "LINEAR") {
-        set_linear_profile(diamond_settings.tip_pressure);
-    } else if (diamond_settings.pressure_profile == "QUADRATIC") {
-        set_quadratic_profile(diamond_settings.tip_pressure);
+    if (settings.diamond.pressure_profile == "LINEAR") {
+        set_linear_profile(settings.diamond.tip_pressure);
+    } else if (settings.diamond.pressure_profile == "QUADRATIC") {
+        set_quadratic_profile(settings.diamond.tip_pressure);
+    } else if (settings.diamond.pressure_profile == "FILE") {
+        set_pressure_profile(settings.general.pressure_input_file);
     }
 }
 

@@ -7,7 +7,7 @@ class Laser {
 public:
 
     Laser(double intensity);
-    Laser(const LaserSettings &laser_settings);
+    Laser(const Settings &settings);
 
     double get_intensity() { return m_intensity ;}
     double get_intensity() const { return m_intensity ;}

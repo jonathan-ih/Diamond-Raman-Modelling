@@ -11,7 +11,7 @@ class Diamond {
 public:
 
     Diamond(double depth, int num_elements);
-    Diamond(const DiamondSettings &diamond_settings);
+    Diamond(const Settings &settings);
 
     double get_depth() const { return m_depth; }
     int get_num_elements() const { return m_num_elements; }

@@ -13,9 +13,9 @@ int main(int argc, char *argv[]) {
     std::string input_file(argv[1]);
     const Settings settings(input_file);
 
-    Diamond diamond(settings.diamond);
-    Raman raman(settings.raman);
-    Laser laser(settings.laser);
+    Diamond diamond(settings);
+    Raman raman(settings);
+    Laser laser(settings);
 
     // General parameters
     const int max_iter = settings.general.max_iter;
@@ -25,18 +25,10 @@ int main(int argc, char *argv[]) {
     std::string pressure_input_file = settings.general.pressure_input_file;
 
     if (settings.general.mode == "SIMULATE") {
-        if (settings.diamond.pressure_profile == "FILE") {
-            diamond.set_pressure_profile(pressure_input_file);
-        }
-
         diamond.write_pressure(pressure_output_file);
         raman.compute_raman_signal(diamond, laser);
         raman.write_signal(signal_output_file);
     } else if (settings.general.mode == "FIT") {
-        if (settings.diamond.pressure_profile == "FILE") {
-            diamond.set_pressure_profile(pressure_input_file);
-        }
-
         std::vector<double> new_pressure_profile;
 
         raman.read_signal(signal_input_file);

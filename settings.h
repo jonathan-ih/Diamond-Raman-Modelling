@@ -44,6 +44,7 @@ struct LaserSettings {
 struct GeneralSettings {
     std::string mode;
     int max_iter;
+    int verbosity;
     std::string signal_output_file;
     std::string signal_input_file;
     std::string pressure_input_file;
@@ -65,6 +66,7 @@ private:
     void process_input_file(const std::vector<std::string> &file_contents);
     void process_section(const std::string &section, const std::vector<std::string> &section_contents);
     void validate_and_assign(const std::string &key, const SettingInfo &info);
+    void check_allowed_values(const std::string &value_string, const std::set<std::string> &allowed_values);
 
     std::map<std::string, SettingInfo> diamond_settings_info = {
         {"NELEM", {POSITIVE_INTEGER, {}, "100", false, &diamond.num_elements}},
@@ -83,6 +85,7 @@ private:
     std::map<std::string, SettingInfo> general_settings_info = {
         {"MODE", {TEXT, {"SIMULATE", "FIT"}, "", true, &general.mode}},
         {"MAX_ITER", {POSITIVE_INTEGER, {}, "100", false, &general.max_iter}},
+        {"VERBOSITY", {POSITIVE_INTEGER, {"0", "1", "2", "3"}, "1", false, &general.verbosity}},
         {"SIG_IN", {TEXT, {}, "signal.in", false, &general.signal_input_file}},
         {"SIG_OUT", {TEXT, {}, "signal.out", false, &general.signal_output_file}},
         {"PRESS_IN", {TEXT, {}, "pressure.in", false, &general.pressure_input_file}},

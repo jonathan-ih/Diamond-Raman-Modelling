@@ -10,10 +10,10 @@ Raman::Raman(int num_sampling_points, double min_freq, double max_freq) :
     m_spectrometer_resolution(m_freq_range / static_cast<double>(m_num_sample_points)),
     m_raman_signal(m_num_sample_points, 0.0) {}
 
-Raman::Raman(const RamanSettings &raman_settings) : 
-    m_num_sample_points(raman_settings.num_sample_points),
-    m_min_freq(raman_settings.min_freq),
-    m_max_freq(raman_settings.max_freq),
+Raman::Raman(const Settings &settings) : 
+    m_num_sample_points(settings.raman.num_sample_points),
+    m_min_freq(settings.raman.min_freq),
+    m_max_freq(settings.raman.max_freq),
     m_freq_range(m_max_freq - m_min_freq),
     m_spectrometer_resolution(m_freq_range / static_cast<double>(m_num_sample_points)),
     m_raman_signal(m_num_sample_points, 0.0) {}

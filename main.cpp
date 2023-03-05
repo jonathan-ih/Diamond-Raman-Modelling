@@ -31,10 +31,10 @@ int main(int argc, char *argv[]) {
     } else if (settings.general.mode == "FIT") {
         raman.read_signal(signal_input_file);
 
-        Fitting fitting(raman, diamond, laser);
+        Fitting fitting(settings, raman, diamond, laser);
 
         fitting.initialize();
-        fitting.fit(max_iter);
+        fitting.fit();
         fitting.print_summary();
 
         raman.write_signal(signal_output_file);

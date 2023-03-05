@@ -41,6 +41,15 @@ struct LaserSettings {
     double intensity;
 };
 
+struct FittingSettings {
+    int max_iter;
+    int print_freq;
+    std::string pressure_log_file;
+    std::string signal_log_file;
+    double xtol;
+    double gtol;
+};
+
 struct GeneralSettings {
     std::string mode;
     int max_iter;
@@ -57,6 +66,7 @@ public:
     RamanSettings raman;
     LaserSettings laser;
     GeneralSettings general;
+    FittingSettings fitting;
 
     Settings(const std::string &input_file);
 
@@ -82,9 +92,16 @@ private:
     std::map<std::string, SettingInfo> laser_settings_info = {
         {"INTENSITY", {POSITIVE_FLOAT, {}, "100", false, &laser.intensity}},
     };
+    std::map<std::string, SettingInfo> fitting_settings_info = {
+        {"MAX_ITER", {POSITIVE_INTEGER, {}, "100", false, &fitting.max_iter}},
+        {"PRINT_FREQ", {POSITIVE_INTEGER, {}, "10", false, &fitting.print_freq}},
+        {"LOG_PRESSURE", {TEXT, {}, "", false, &fitting.pressure_log_file}},
+        {"LOG_SIGNAL", {TEXT, {}, "", false, &fitting.signal_log_file}},
+        {"XTOL", {FLOAT, {}, "1e-8", false, &fitting.xtol}},
+        {"GTOL", {FLOAT, {}, "1e-8", false, &fitting.gtol}},
+    };
     std::map<std::string, SettingInfo> general_settings_info = {
         {"MODE", {TEXT, {"SIMULATE", "FIT"}, "", true, &general.mode}},
-        {"MAX_ITER", {POSITIVE_INTEGER, {}, "100", false, &general.max_iter}},
         {"VERBOSITY", {POSITIVE_INTEGER, {"0", "1", "2", "3"}, "1", false, &general.verbosity}},
         {"SIG_IN", {TEXT, {}, "signal.in", false, &general.signal_input_file}},
         {"SIG_OUT", {TEXT, {}, "signal.out", false, &general.signal_output_file}},

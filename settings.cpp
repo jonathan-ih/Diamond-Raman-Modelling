@@ -81,6 +81,8 @@ void Settings::process_section(const std::string &section, const std::vector<std
         settings_map = laser_settings_info;
     } else if (section == "GENERAL") {
         settings_map = general_settings_info;
+    } else if (section == "FITTING") {
+        settings_map = fitting_settings_info;
     } else {
         throw std::runtime_error("Section " + section + " not recognised"); 
     }

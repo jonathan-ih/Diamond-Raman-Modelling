@@ -3,14 +3,17 @@
 
 #include "diamond.h"
 
-Diamond::Diamond(const double depth, const int num_elements) : m_depth(depth), m_num_elements(num_elements),
-                                                               m_element_size(m_depth / m_num_elements),
-                                                               m_pressure_profile(m_num_elements) {}
+Diamond::Diamond(double depth, int num_elements, double penetration_depth) :
+    m_depth(depth), m_num_elements(num_elements),
+    m_element_size(m_depth / m_num_elements),
+    m_pressure_profile(m_num_elements),
+    m_penetration_depth(penetration_depth) {}
 
 Diamond::Diamond(const Settings &settings) : m_depth(settings.diamond.depth),
                                                             m_num_elements(settings.diamond.num_elements),
                                                             m_element_size(m_depth / m_num_elements),
-                                                            m_pressure_profile(m_num_elements) {
+                                                            m_pressure_profile(m_num_elements),
+                                                            m_penetration_depth(settings.diamond.penetration_depth) {
     if (settings.diamond.pressure_profile == "LINEAR") {
         set_linear_profile(settings.diamond.tip_pressure);
     } else if (settings.diamond.pressure_profile == "QUADRATIC") {
@@ -31,11 +34,11 @@ void Diamond::set_pressure_profile(const std::string &pressure_profile) {
 }
 
 double Diamond::get_attenuation(double initial_intensity, double distance) {
-    return initial_intensity * exp(-distance / penetration_depth);
+    return initial_intensity * exp(-distance / m_penetration_depth);
 }
 
 double Diamond::get_attenuation(double initial_intensity, double distance) const {
-    return initial_intensity * exp(-distance / penetration_depth);
+    return initial_intensity * exp(-distance / m_penetration_depth);
 }
 
 void Diamond::write_pressure(const std::string &output_file) {

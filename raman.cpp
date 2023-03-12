@@ -49,6 +49,7 @@ void Raman::compute_raman_signal(const Diamond &diamond, const Laser &laser) {
         frequency = compute_frequency(diamond.get_pressure_profile()[i]);
         linewidth = compute_linewidth(diamond.get_pressure_profile()[i]);
         intensity = diamond.get_attenuation(laser.get_intensity(), 2 * i * diamond.get_element_size());
+        intensity *= laser.get_z_intensity_profile()[i];        // Confocal setup
         add_hydrostatic_signal(intensity, frequency, linewidth);
     }
 }

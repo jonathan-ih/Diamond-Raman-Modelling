@@ -29,6 +29,7 @@ struct DiamondSettings {
     double depth;
     double tip_pressure;
     std::string pressure_profile;
+    double penetration_depth;
 };
 
 struct RamanSettings {
@@ -39,6 +40,10 @@ struct RamanSettings {
 
 struct LaserSettings {
     double intensity;
+    double pinhole_num_aperture;
+    double wavelength;
+    double lens_refractive_index;
+    double z_focus_depth;
 };
 
 struct FittingSettings {
@@ -88,6 +93,7 @@ private:
         {"DEPTH", {POSITIVE_FLOAT, {}, "0", true, &diamond.depth}},
         {"PRESSURE_PROFILE", {TEXT, {"LINEAR", "QUADRATIC", "FILE"},"LINEAR", false, &diamond.pressure_profile}},
         {"TIP_PRESSURE", {POSITIVE_FLOAT, {}, "0", false, &diamond.tip_pressure}},
+        {"PENETRATION_DEPTH", {POSITIVE_FLOAT, {}, "1000", false, &diamond.penetration_depth}},
     };
     std::map<std::string, SettingInfo> raman_settings_info = {
         {"NFREQ", {POSITIVE_INTEGER, {}, "1000", false, &raman.num_sample_points}},
@@ -96,6 +102,10 @@ private:
     };
     std::map<std::string, SettingInfo> laser_settings_info = {
         {"INTENSITY", {POSITIVE_FLOAT, {}, "100", false, &laser.intensity}},
+        {"PIN_APERTURE", {POSITIVE_FLOAT, {}, "1", false, &laser.pinhole_num_aperture}},
+        {"WAVELENGTH", {POSITIVE_FLOAT, {}, "700", false, &laser.wavelength}},
+        {"REF_INDEX", {POSITIVE_FLOAT, {}, "2.1", false, &laser.lens_refractive_index}},
+        {"FOCUS_DEPTH", {POSITIVE_FLOAT, {}, "0", false, &laser.z_focus_depth}},
     };
     std::map<std::string, SettingInfo> fitting_settings_info = {
         {"MAX_ITER", {POSITIVE_INTEGER, {}, "100", false, &fitting.max_iter}},

@@ -205,7 +205,8 @@ std::ostream& Settings::print_diamond_settings(std::ostream& out_stream, const D
                << std::string(indent, ' ') << "Depth of the anvil: " << diamond.depth << "\n"
                << std::string(indent, ' ') << "Tip pressure: " << diamond.tip_pressure << "\n"
                << std::string(indent, ' ') << "Pressure profile: " << (diamond.pressure_profile == "FILE" ?
-                                                                       "Read from PRESS_IN" : diamond.pressure_profile) << std::endl;
+                                                                       "Read from PRESS_IN" : diamond.pressure_profile) << "\n"
+               << std::string(indent, ' ') << "Penetration depth: " << diamond.penetration_depth << std::endl;
     return out_stream;
 }
 
@@ -219,6 +220,10 @@ std::ostream& Settings::print_raman_settings(std::ostream& out_stream, const Ram
 
 std::ostream& Settings::print_laser_settings(std::ostream& out_stream, const LaserSettings &laser, int indent) {
     out_stream << "LASER Settings" << std::endl;
-    out_stream << std::string(indent, ' ') << "Intensity: " << laser.intensity << std::endl;
+    out_stream << std::string(indent, ' ') << "Intensity: " << laser.intensity << "\n"
+               << std::string(indent, ' ') << "Wavelength: " << laser.wavelength << "\n"
+               << std::string(indent, ' ') << "Focus depth: " << laser.z_focus_depth << "\n"
+               << std::string(indent, ' ') << "Confocal pinhole aperture: " << laser.pinhole_num_aperture << "\n"
+               << std::string(indent, ' ') << "Lens refractive index: " << laser.lens_refractive_index << std::endl;
     return out_stream;
 }

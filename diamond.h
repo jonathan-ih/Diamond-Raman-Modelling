@@ -7,10 +7,9 @@
 #include "settings.h"
 
 class Diamond {
-    static constexpr double penetration_depth = 100.0;
 public:
 
-    Diamond(double depth, int num_elements);
+    Diamond(double depth, int num_elements, double penetration_depth);
     Diamond(const Settings &settings);
 
     double get_depth() const { return m_depth; }
@@ -30,6 +29,7 @@ private:
     int m_num_elements;
     double m_element_size;
     std::vector<double> m_pressure_profile;
+    double m_penetration_depth;
 
     void set_linear_profile(const double tip_pressure);
     void set_quadratic_profile(const double tip_pressure);
